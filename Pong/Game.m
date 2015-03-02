@@ -14,6 +14,11 @@
 
 @implementation Game
 
+- (IBAction)EndGame:(id)sender {
+    timer = nil;
+    [[self navigationController] popViewControllerAnimated: YES];
+}
+
 -(void)Collision;{
     
     
@@ -131,9 +136,25 @@
     
     NSURL *SoundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Clang" ofType:@"wav"]];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)SoundURL, &PlaySoundID);
+
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(BallMovement) userInfo:nil repeats:YES];
     Speed = 1;
+    X = 0;
+    Y = 0;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+
+    if(timer)
+    {
+        [timer invalidate];
+        timer = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
